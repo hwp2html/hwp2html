@@ -13,7 +13,7 @@ public class Hwp2html {
         StringBuilder hwpText = new StringBuilder();
         paragraphs.forEach(paragraph -> {
             hwpText.append("<p>");
-            hwpText.append(extractText(paragraph));
+            hwpText.append(extractFromParagraph(paragraph));
             hwpText.append("</p>");
             hwpText.append(System.lineSeparator());
         });
@@ -21,7 +21,7 @@ public class Hwp2html {
         return new HTMLFile(hwpText.toString());
     }
 
-    private String extractText(Paragraph paragraph){
+    private String extractFromParagraph(Paragraph paragraph){
         if (paragraph.getText() == null) return "";
         String normalString = null;
         try {
