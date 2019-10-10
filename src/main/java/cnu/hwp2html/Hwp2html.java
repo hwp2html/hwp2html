@@ -1,17 +1,34 @@
 package cnu.hwp2html;
 
 import kr.dogfoot.hwplib.object.HWPFile;
-import kr.dogfoot.hwplib.tool.textextractor.TextExtractMethod;
-import kr.dogfoot.hwplib.tool.textextractor.TextExtractor;
+import kr.dogfoot.hwplib.object.bodytext.Section;
+import kr.dogfoot.hwplib.object.bodytext.paragraph.Paragraph;
 
 import java.io.UnsupportedEncodingException;
 
 public class Hwp2html {
 
-    public HTMLFile convert(HWPFile hwpFile) throws UnsupportedEncodingException {
-        TextExtractMethod tem = TextExtractMethod.InsertControlTextBetweenParagraphText;
-        String hwpText = TextExtractor.extract(hwpFile, tem);
+    public HTMLFile convert(HWPFile hwpFile) {
+        Section paragraphs = hwpFile.getBodyText().getSectionList().get(0);
+        StringBuilder hwpText = new StringBuilder();
+        paragraphs.forEach(paragraph -> {
+            hwpText.append("<p>");
+            hwpText.append(extractText(paragraph));
+            hwpText.append("</p>");
+            hwpText.append(System.lineSeparator());
+        });
 
-        return new HTMLFile(hwpText);
+        return new HTMLFile(hwpText.toString());
+    }
+
+    private String extractText(Paragraph paragraph){
+        if (paragraph.getText() == null) return "";
+        String normalString = null;
+        try {
+            normalString = paragraph.getText().getNormalString(0, paragraph.getText().getCharList().size()-1);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return normalString;
     }
 }
