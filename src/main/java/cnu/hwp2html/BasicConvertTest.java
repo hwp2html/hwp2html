@@ -14,7 +14,7 @@ public class BasicConvertTest {
         FileOutputStream fos = new FileOutputStream(new File("test.html"));
 
         TextExtractMethod tem = TextExtractMethod.InsertControlTextBetweenParagraphText;
-        String data = test("sample_hwp" + File.separator + "test-blank.hwp", tem);
+        String data = test("src" + File.separator + "main" + File.separator + "resources" + File.separator + "test-blank.hwp", tem);
         data = "<p>"+data+"<p>";
         fos.write(data.getBytes());
     }
